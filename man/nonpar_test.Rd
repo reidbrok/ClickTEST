@@ -11,7 +11,7 @@ nonpar_test(
   num_var = NA,
   paired = F,
   exact = F,
-  mu_values = rep(0, 1),
+  mu_values = NA,
   alternative = "two.sided",
   threshold = 0.05,
   method = "none"
@@ -30,13 +30,13 @@ nonpar_test(
 
 \item{exact}{a Boolean value indicate if its a exact test, default value is False}
 
+\item{mu_values}{a list of variable that indicate the null hypothesis assumption value, default is a list of 0}
+
 \item{alternative}{a variable indicate the hypothesis testing, default is "two.sided"}
 
 \item{threshold}{the threshold for Test, default value is 0.05}
 
 \item{method}{correction method for Dunn's test, default value is "none"}
-
-\item{mu}{a list of variable that indicate the null hypothesis assumption value, default is a list of 0}
 }
 \value{
 a list where the first element contains the column names of normal data, the second element contains the column name for those data are not normal
@@ -45,7 +45,13 @@ a list where the first element contains the column names of normal data, the sec
 a function that perform non-parametric hypothesis test result for all non-normal numeric columns in a dataframe
 }
 \examples{
-nonpar_test(dataframe)
+set.seed(123)
+df <- data.frame(
+  group = rep(c("Group1", "Group2"), each = 10),
+  data1 = c(runif(10, min = 0, max = 50), rpois(10, lambda = 20)),
+  data2 = c(runif(10, min = 50, max = 100), rpois(10, lambda = 30))
+)
+nonpar_test(df)
 }
 \author{
 Yushu Zou

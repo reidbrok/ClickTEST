@@ -6,18 +6,24 @@
 #' @param test string to indicate if user want to mean test or variance test (not available for one sample test). Value could be either "sign" or "variance", the default value is sign.
 #' @param paired a Boolean value indicate if its a paired test, default value is False
 #' @param exact a Boolean value indicate if its a exact test, default value is False
-#' @param mu a list of variable that indicate the null hypothesis assumption value, default is a list of 0
+#' @param mu_values a list of variable that indicate the null hypothesis assumption value, default is a list of 0
 #' @param alternative a variable indicate the hypothesis testing, default is "two.sided"
 #' @param threshold the threshold for Test, default value is 0.05
 #' @param method correction method for Dunn's test, default value is "none"
 #' @return a list where the first element contains the column names of normal data, the second element contains the column name for those data are not normal
 #' @author Yushu Zou
 #' @examples
-#' nonpar_test(dataframe)
+#' set.seed(123)
+#' df <- data.frame(
+#'   group = rep(c("Group1", "Group2"), each = 10),
+#'   data1 = c(runif(10, min = 0, max = 50), rpois(10, lambda = 20)),
+#'   data2 = c(runif(10, min = 50, max = 100), rpois(10, lambda = 30))
+#' )
+#' nonpar_test(df)
 #' @export
 #'
 
-nonpar_test <- function(df, test = "sign", group_var = NA, num_var = NA, paired = F, exact = F, mu_values = rep(0,1), alternative = "two.sided", threshold = .05, method = "none"){
+nonpar_test <- function(df, test = "sign", group_var = NA, num_var = NA, paired = F, exact = F, mu_values = NA, alternative = "two.sided", threshold = .05, method = "none"){
   # if the numeric column name is not provide, that any column in the dataframe that does not follow normality will be used
   if (is.na(num_var)){
     normal_result <- test_normality(df,threshold)

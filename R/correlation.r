@@ -10,9 +10,8 @@
 #' @examples
 #' df <- data.frame(col1 = rnorm(100), col2 = rnorm(100), col3 = rnorm(100))
 #' result <- correlation(df, c("col1", "col2"), c("col2", "col3"))
-#' print(result)
 #' @export
-#'
+#' @import stats
 
 correlation <- function(df, base_cols, other_cols, method = "pearson", special_methods = list()) {
   results <- list()

@@ -8,8 +8,15 @@
 #' @param correct a Boolean variable to indicate whether the chi-square test need correction
 #' @return a list where the first element contains the column names of normal data, the second element contains the column name for those data are not normal
 #' @author Yushu Zou
+#' @import stats
 #' @examples
-#' nonpar_test(dataframe)
+#' set.seed(123)
+#' df <- data.frame(
+#'  group = factor(rep(c("Group1", "Group2"), each = 50)), # Two groups
+#'  category1 = factor(sample(c("Cat1", "Cat2", "Cat3"), 100, replace = TRUE)),
+#'  category2 = factor(sample(c("TypeA", "TypeB", "TypeC"), 100, replace = TRUE))
+#')
+#' categorical_test(df, group_var = "group")
 #' @export
 #'
 categorical_test <- function(df, group_var = NA, cat_var = NA, alternative = "two.sided", threshold = .05, correct = T){

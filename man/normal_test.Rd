@@ -37,6 +37,8 @@ normal_test(
 
 \item{threshold}{the threshold for Test, default value is 0.05}
 
+\item{method}{correction method for Dunn's test, default value is "none"}
+
 \item{equal_variances}{a Boolean value for equal variance in more than 3 groups test. Default value is T, indicate that one-way anova test will be run.}
 }
 \value{
@@ -46,10 +48,16 @@ a list where the first element contains the column names of normal data, the sec
 a function that perform parametric hypothesis test result for all normal numeric columns in a dataframe
 }
 \examples{
-result <- normal_test(dataframe)
-``` For comparing more than 3 groups`
-result[1] ### Barlett Test & ANOVA Test / Welch Test
-result[2]$ variable name ### Tukey / Games-Howell Result
+set.seed(123)
+n <- 1000
+df <- data.frame(
+normal1 = rnorm(n, mean = 50, sd = 10),    # Normally distributed
+normal2 = rnorm(n, mean = 100, sd = 20),   # Normally distributed
+uniform = runif(n, min = 0, max = 50),     # Uniform distribution (non-normal)
+poisson = rpois(n, lambda = 20),           # Poisson distribution (non-normal)
+exponential = rexp(n, rate = 0.1)          # Exponential distribution (non-normal)
+)
+result <- normal_test(df)
 }
 \author{
 Yushu Zou

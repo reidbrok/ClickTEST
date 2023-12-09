@@ -9,6 +9,6 @@ chisquare_onesample <- function(df,num_var, alternative, mu_values, threshold){
     chisquare_results[[col_name]] <- test_result$p.value
   }
   result_df <- data.frame(p_value = unlist(chisquare_results))
-  result_df <- result_df %>% mutate(significate = ifelse(p_value < threshold, "***", ""))
+  result_df[["significate"]] = ifelse(result_df[["p_value"]] < threshold, "***", "")
   return (result_df)
 }

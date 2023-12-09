@@ -33,7 +33,13 @@ a list where the first element contains the column names of normal data, the sec
 a function that perform hypothesis test result for all categorical columns in a dataframe
 }
 \examples{
-nonpar_test(dataframe)
+set.seed(123)
+df <- data.frame(
+ group = factor(rep(c("Group1", "Group2"), each = 50)), # Two groups
+ category1 = factor(sample(c("Cat1", "Cat2", "Cat3"), 100, replace = TRUE)),
+ category2 = factor(sample(c("TypeA", "TypeB", "TypeC"), 100, replace = TRUE))
+)
+categorical_test(df, group_var = "group")
 }
 \author{
 Yushu Zou

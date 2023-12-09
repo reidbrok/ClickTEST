@@ -1,6 +1,6 @@
 twosample_t <- function(df,num_var, group_var, paired, alternative, threshold, test){
   t_results <- list()
-  for (col_name in names(df%>% dplyr::select(all_of(num_var)))) {
+  for (col_name in num_var) {
     if (test == "mean"){
     group1 <- df[df[[group_var]] == levels(df[[group_var]])[1], col_name]
     group2 <- df[df[[group_var]] == levels(df[[group_var]])[2], col_name]

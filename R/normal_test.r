@@ -9,16 +9,23 @@
 #' @param mu_values a list of variable that indicate the null hypothesis assumption value, default is a list of 0
 #' @param alternative a variable indicate the hypothesis testing, default is "two.sided"
 #' @param threshold the threshold for Test, default value is 0.05
+#' @param method correction method for Dunn's test, default value is "none"
 #' @param equal_variances a Boolean value for equal variance in more than 3 groups test. Default value is T, indicate that one-way anova test will be run.
 #' @return a list where the first element contains the column names of normal data, the second element contains the column name for those data are not normal
 #' @author Yushu Zou
 #' @examples
-#' result <- normal_test(dataframe)
-#' ``` For comparing more than 3 groups`
-#' result[1] ### Barlett Test & ANOVA Test / Welch Test
-#' result[2]$ variable name ### Tukey / Games-Howell Result
+#' set.seed(123)
+#' n <- 1000
+#' df <- data.frame(
+#' normal1 = rnorm(n, mean = 50, sd = 10),    # Normally distributed
+#' normal2 = rnorm(n, mean = 100, sd = 20),   # Normally distributed
+#' uniform = runif(n, min = 0, max = 50),     # Uniform distribution (non-normal)
+#' poisson = rpois(n, lambda = 20),           # Poisson distribution (non-normal)
+#' exponential = rexp(n, rate = 0.1)          # Exponential distribution (non-normal)
+#' )
+#' result <- normal_test(df)
 #' @export
-#'
+#' @import stats
 normal_test <-  function(df, test = "mean", group_var = NA, num_var = NA, paired = F, exact = F, mu_values = rep(NA,1), alternative = "two.sided", threshold = .05, method = "none", equal_variances = T){
     # if the numeric column name is not provide, that any column in the dataframe that does follow normality will be used
 

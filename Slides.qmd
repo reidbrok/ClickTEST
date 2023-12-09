@@ -1,0 +1,27 @@
+---
+title: "ClickTEST"
+format: revealjs
+editor: visual
+---
+
+## Why I want this ?
+
+I am so tired of doing replicate work for statistical checking.
+
+![](Slides_files/figure/tired.jpg){fig-align="center"}
+
+## Content
+
+NOW! Let me introduce the new technique for you!!!
+
+ClickTest!!!!!!
+
+## 
+
+## Code
+
+When you click the **Render** button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
