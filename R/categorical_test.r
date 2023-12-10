@@ -26,14 +26,14 @@ categorical_test <- function(df, group_var = NA, cat_var = NA, alternative = "tw
   if (is.null(cat_var)){
     stop("there is no categorical data in your dataframe")
   }
-  if(is.na(group_var) | length(levels(as.factor(df[[group_var]]))) == 1){
-    stop("we only support compared it with the group")
-  }
 
   if (!is.na(group_var) & group_var %in% names(df)){
     df[[group_var]] <- as.factor(df[[group_var]])
   }
-  else{
+  if(is.na(group_var) | length(levels(as.factor(df[[group_var]]))) == 1){
+    stop("we only support compared it with the group")
+  }
+  if(!group_var %in% names(df)){
     stop("there is no such group column")
   }
   if(length(levels(df[[group_var]])) == 2){

@@ -36,14 +36,11 @@ normal_test <-  function(df, test = "mean", group_var = NA, num_var = NA, paired
       stop("there is no numeric data that is normal in your dataframe")
     }
     if (length(mu_values) == 1 & max(is.na(mu_values)) == 1){
-      mu_values <- rep(0, length(num_var))
+      mu_values <- rep(1, length(num_var))
         }
     mu_values <- setNames(mu_values, num_var)
     if (!is.na(group_var) & group_var %in% names(df)){
       df[[group_var]] <- as.factor(df[[group_var]])
-    }
-    else{
-      stop("there is no such group column")
     }
     if ((is.na(group_var)) | (length(levels(df[[group_var]])) == 1)){ ## one sample test
       print("one sample test")
@@ -53,8 +50,11 @@ normal_test <-  function(df, test = "mean", group_var = NA, num_var = NA, paired
       else{ ### one sample variance test
         result <- chisquare_onesample(df,num_var,alternative = alternative, mu_values = mu_values, threshold = threshold)
       }
+      return(result)
     }
-
+  if (!group_var %in% names(df)){
+    stop("there is no such group column")
+  }
   if(length(levels(df[[group_var]])) > 1){## 2 or more sample test
       if(length(levels(df[[group_var]])) == 2){
         print("Two groups comparison")
