@@ -66,18 +66,19 @@ nonpar_test <- function(df, test = "sign", group_var = NA, num_var = NA, paired 
         print("krustal test for more than 3 groups")
         result <- Kruskal_test(df,num_var, group_var, threshold = threshold)
         var <- rownames(result[result$significate == "***", ])
-        if(!is.na(var)){ # exists difference among three groups
+        if(length(var)>1){ # exists difference among three groups
         # Dunn's test for post-hoc
           print("Dunn's test for post-hoc")
           dunn_results <- Dunn_test(df,var,group_var,method = method, threshold = threshold)
-          }
+          return(list(result,dunn_results))
+        }
+        return(result)
         }
       else{ # Variance Test
         print("variance leneve test")
         result <- leneve_test(df,num_var, group_var, threshold = threshold)
         return(result)
       }
-      return(list(result,dunn_results))
     }
   return(result)
   }
