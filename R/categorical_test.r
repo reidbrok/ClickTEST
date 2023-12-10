@@ -20,7 +20,7 @@
 #' @export
 #'
 categorical_test <- function(df, group_var = NA, cat_var = NA, alternative = "two.sided", threshold = .05, correct = T){
-  if (max(is.na(cat_var) == 1)){
+  if (max(is.na(cat_var)) == 1){
     cat_var <- names(df)[sapply(df, function(col) (is.factor(col) || is.character(col))) & (names(df) != group_var)]
   }
   if (is.null(cat_var)){
@@ -29,7 +29,13 @@ categorical_test <- function(df, group_var = NA, cat_var = NA, alternative = "tw
   if(is.na(group_var) | length(levels(as.factor(df[[group_var]]))) == 1){
     stop("we only support compared it with the group")
   }
-  df[[group_var]] = as.factor(df[[group_var]])
+
+  if (!is.na(group_var) & group_var %in% names(df)){
+    df[[group_var]] <- as.factor(df[[group_var]])
+  }
+  else{
+    stop("there is no such group column")
+  }
   if(length(levels(df[[group_var]])) == 2){
     print("two sample categorical test")
     result <- fisher(df,cat_var, group_var, threshold = threshold, correct = correct,alternative = alternative)

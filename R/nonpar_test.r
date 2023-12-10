@@ -36,7 +36,9 @@ nonpar_test <- function(df, test = "sign", group_var = NA, num_var = NA, paired 
   mu_values <- setNames(mu_values, num_var)
   if(!is.na(group_var) & group_var %in% names(df)){
     df[[group_var]] <- as.factor(df[[group_var]])}
-
+  else{
+    stop("there is no such group column")
+  }
   if (is.na(group_var) | length(levels(df[[group_var]])) == 1){
     if(test == "variance"){
       stop("We don't support one sample variance test for non-parametric test.")
