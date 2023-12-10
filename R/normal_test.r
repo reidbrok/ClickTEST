@@ -26,18 +26,19 @@
 #' result <- normal_test(df)
 #' @export
 #' @import stats
-normal_test <-  function(df, test = "mean", group_var = NA, num_var = NA, paired = F, exact = F, mu_values = rep(NA,1), alternative = "two.sided", threshold = .05, method = "none", equal_variances = T){
+normal_test <-  function(df, test = "mean", group_var = NA, num_var = NA, paired = F, exact = F, mu_values = NA, alternative = "two.sided", threshold = .05, method = "none", equal_variances = T){
     # if the numeric column name is not provide, that any column in the dataframe that does follow normality will be used
 
   if (is.na(num_var)){
       normal_result <- test_normality(df,threshold =0.05)
       num_var <- normal_result$normal
-      mu_values <- rep(0, length(num_var))
-      mu_values <- setNames(mu_values, num_var)
   }
+
     if (is.null(num_var)){
-    stop("there is no numeric data that is normal in your dataframe")
+      stop("there is no numeric data that is normal in your dataframe")
     }
+    if (is.na(mu_values)){mu_values <- rep(0, length(num_var))}
+    mu_values <- setNames(mu_values, num_var)
     if (!is.na(group_var)){df[[group_var]] <- as.factor(df[[group_var]])}
     if ((is.na(group_var)) | (length(levels(df[[group_var]])) == 1)){ ## one sample test
       print("one sample test")
