@@ -28,17 +28,23 @@
 #' @import stats
 normal_test <-  function(df, test = "mean", group_var = NA, num_var = NA, paired = F, exact = F, mu_values = rep(NA,1), alternative = "two.sided", threshold = .05, method = "none", equal_variances = T){
     # if the numeric column name is not provide, that any column in the dataframe that does follow normality will be used
-
-  if (sum(is.na(num_var)) == 0){
+  if (max(is.na(num_var)) == 1){
       normal_result <- test_normality(df,threshold =0.05)
       num_var <- normal_result$normal
   }
     if (is.null(num_var)){
       stop("there is no numeric data that is normal in your dataframe")
     }
-    if (length(mu_values) == 1 & sum(is.na(mu_values)) == 0){mu_values <- rep(0, length(num_var))}
+    if (length(mu_values) == 1 & max(is.na(mu_values)) == 1){
+      mu_values <- rep(0, length(num_var))
+        }
     mu_values <- setNames(mu_values, num_var)
-    if (!is.na(group_var)){df[[group_var]] <- as.factor(df[[group_var]])}
+    if (!is.na(group_var) & group_var %in% names(df)){
+      df[[group_var]] <- as.factor(df[[group_var]])
+    }
+    else{
+      stop("there is no such group column")
+    }
     if ((is.na(group_var)) | (length(levels(df[[group_var]])) == 1)){ ## one sample test
       print("one sample test")
       if (test == "mean"){ ### one sample mean test

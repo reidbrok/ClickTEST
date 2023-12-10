@@ -20,7 +20,7 @@
 #' @export
 #'
 categorical_test <- function(df, group_var = NA, cat_var = NA, alternative = "two.sided", threshold = .05, correct = T){
-  if (is.na(cat_var)){
+  if (max(is.na(cat_var) == 1)){
     cat_var <- names(df)[sapply(df, function(col) (is.factor(col) || is.character(col))) & (names(df) != group_var)]
   }
   if (is.null(cat_var)){
