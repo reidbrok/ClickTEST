@@ -11,7 +11,7 @@ normal_test(
   num_var = NA,
   paired = F,
   exact = F,
-  mu_values = NA,
+  mu_values = rep(NA, 1),
   alternative = "two.sided",
   threshold = 0.05,
   method = "none",

@@ -6,7 +6,7 @@ chisquare <- function(df, cat_var, group_var, threshold, correct){
     chi_square.result[[col_name]] <- test_result$p.value
   }
   result_df <- data.frame(p_value = unlist(chi_square.result))
-  result_df["significate"] = ifelse(result_df["p_value"] < threshold, "***", "")
+  result_df[["significate"]] = ifelse(result_df[["p_value"]] < threshold, "***", "")
   return (result_df)
 }
 
