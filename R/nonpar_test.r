@@ -25,7 +25,7 @@
 
 nonpar_test <- function(df, test = "sign", group_var = NA, num_var = NA, paired = F, exact = F, mu_values = NA, alternative = "two.sided", threshold = .05, method = "none"){
   # if the numeric column name is not provide, that any column in the dataframe that does not follow normality will be used
-  if (is.na(num_var)){
+  if (length(num_var)>0){
     normal_result <- test_normality(df,threshold)
     num_var <- normal_result$non_normal
     mu_values <- rep(0, length(num_var))
@@ -75,5 +75,5 @@ nonpar_test <- function(df, test = "sign", group_var = NA, num_var = NA, paired 
     }
   return(result)
   }
-
+  return(result)
 }
