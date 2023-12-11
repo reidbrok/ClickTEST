@@ -45,13 +45,11 @@ a list where the first element contains the column names of normal data, the sec
 a function that perform non-parametric hypothesis test result for all non-normal numeric columns in a dataframe
 }
 \examples{
-set.seed(123)
-df <- data.frame(
-  group = rep(c("Group1", "Group2"), each = 10),
-  data1 = c(runif(10, min = 0, max = 50), rpois(10, lambda = 20)),
-  data2 = c(runif(10, min = 50, max = 100), rpois(10, lambda = 30))
-)
-nonpar_test(df)
+nonpar_test(example_data)
+nonpar_test(example_data, group_var = "group_two")
+nonpar_test(example_data, group_var = "group_three")
+nonpar_test(example_data, group_var = "group_two", test ="variance")
+nonpar_test(example_data, group_var = "group_three", test ="variance")
 }
 \author{
 Yushu Zou

@@ -48,16 +48,11 @@ a list where the first element contains the column names of normal data, the sec
 a function that perform parametric hypothesis test result for all normal numeric columns in a dataframe
 }
 \examples{
-set.seed(123)
-n <- 1000
-df <- data.frame(
-normal1 = rnorm(n, mean = 50, sd = 10),    # Normally distributed
-normal2 = rnorm(n, mean = 100, sd = 20),   # Normally distributed
-uniform = runif(n, min = 0, max = 50),     # Uniform distribution (non-normal)
-poisson = rpois(n, lambda = 20),           # Poisson distribution (non-normal)
-exponential = rexp(n, rate = 0.1)          # Exponential distribution (non-normal)
-)
-result <- normal_test(df)
+normal_test(example_data)
+normal_test(example_data, group_var = "group_two")
+normal_test(example_data, group_var = "group_three")
+normal_test(example_data, group_var = "group_two", test = "variance")
+normal_test(example_data, group_var = "group_three", test = "variance")
 }
 \author{
 Yushu Zou
