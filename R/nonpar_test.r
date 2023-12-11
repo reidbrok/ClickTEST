@@ -29,14 +29,16 @@ nonpar_test <- function(df, test = "sign", group_var = NA, num_var = NA, paired 
     normal_result <- test_normality(df,threshold)
     num_var <- normal_result$non_normal
   }
-  if (is.null(num_var)){
-    stop("there is no numeric data that is non-normal in your dataframe")
+  if (is.null(num_var) | max(num_var %in% names(df)) == 0){
+    stop("the variable you entered is not satisfy the condition for process")
   }
-  if (length(mu_values) == 1 & max(is.na(mu_values)) == 1){mu_values <- rep(1, length(num_var))}
+  if (length(mu_values) == 1 & max(is.na(mu_values)) == 1){
+    mu_values <- rep(1, length(num_var))
+    }
   mu_values <- setNames(mu_values, num_var)
   if(!is.na(group_var) & group_var %in% names(df)){
     df[[group_var]] <- as.factor(df[[group_var]])}
-  if (is.na(group_var) | length(levels(df[[group_var]])) == 1){
+  if ((is.na(group_var))|| (group_var %in% names(df) & length(levels(df[[group_var]])) == 1)){ ## one sample test
     if(test == "variance"){
       stop("We don't support one sample variance test for non-parametric test.")
     }
