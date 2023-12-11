@@ -10,7 +10,7 @@ library(ClickTEST)
 ## Code Example
 ### Normal Test
 ```{r}
-normality_test(df, threshold = 0.05)
+normality_test(exampledata, threshold = 0.05)
 ```
 
 will return with a list, calling `$normal` for a list of column names that are normally distributed; calling `$non_normal` for a list of column names that are not normally distributed
