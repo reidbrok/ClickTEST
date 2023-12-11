@@ -32,7 +32,8 @@ normal_test <-  function(df, test = "mean", group_var = NA, num_var = NA, paired
       normal_result <- test_normality(df,threshold =0.05)
       num_var <- normal_result$normal
   }
-    if (is.null(num_var) | max(num_var %in% names(df)) == 0){
+  # Indicate if all numeric column are not normal distributed or there is at least one column in num_var is not in dataframe
+    if (is.null(num_var) | min(num_var %in% names(df)) == 0){
       stop("the variable you entered is not satisfy the condition for process")
     }
 
