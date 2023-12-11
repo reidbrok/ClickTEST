@@ -13,13 +13,11 @@
 #' @return a list where the first element contains the column names of normal data, the second element contains the column name for those data are not normal
 #' @author Yushu Zou
 #' @examples
-#' set.seed(123)
-#' df <- data.frame(
-#'   group = rep(c("Group1", "Group2"), each = 10),
-#'   data1 = c(runif(10, min = 0, max = 50), rpois(10, lambda = 20)),
-#'   data2 = c(runif(10, min = 50, max = 100), rpois(10, lambda = 30))
-#' )
-#' nonpar_test(df)
+#' nonpar_test(example_data)
+#' nonpar_test(example_data, group_var = "group_two")
+#' nonpar_test(example_data, group_var = "group_three")
+#' nonpar_test(example_data, group_var = "group_two", test ="variance")
+#' nonpar_test(example_data, group_var = "group_three", test ="variance")
 #' @export
 #'
 
@@ -36,14 +34,18 @@ nonpar_test <- function(df, test = "sign", group_var = NA, num_var = NA, paired 
     mu_values <- rep(1, length(num_var))
     }
   mu_values <- setNames(mu_values, num_var)
-  if(!is.na(group_var) & group_var %in% names(df)){
-    df[[group_var]] <- as.factor(df[[group_var]])}
+  if (!is.na(group_var) & group_var %in% names(df)){
+    df[[group_var]] <- as.factor(df[[group_var]])
+    if (group_var %in% num_var){
+      num_var = setdiff(num_var,group_var)
+    }
+  }
   if ((is.na(group_var))|| (group_var %in% names(df) & length(levels(df[[group_var]])) == 1)){ ## one sample test
     if(test == "variance"){
       stop("We don't support one sample variance test for non-parametric test.")
     }
       print("one sample Wilcox test")
-      result <- wilcox_test(df,num_var, group_var, paired = paired, exact = exact,alternative = alternative, mu_values = mu_values, threshold = threshold)
+      result <- wilcox_test_one_sample(df,num_var, group_var, paired = paired, exact = exact,alternative = alternative, mu_values = mu_values, threshold = threshold)
   }
   else{ # 2 or more sample test
     if(!group_var %in% names(df)){

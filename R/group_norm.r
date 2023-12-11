@@ -31,6 +31,11 @@ group_norm <- function(df,num_var, group_var, test, threshold,equal_variances, a
       }
     }
   }
+  if (test == "variance"){
+    return(group_results)
+  }
+  else{
   #post_results_sign <- ifelse(post_results < threshold/length(unique(df[[group_var]]))-1, "***","")
   return (list(group_results,post_results))
+  }
 }

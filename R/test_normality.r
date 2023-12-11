@@ -5,16 +5,7 @@
 #' @return a list where the first element contains the column names of normal data, the second element contains the column name for those data are not normal
 #' @author Yushu Zou
 #' @examples
-#' set.seed(123)
-#' n <- 1000
-#' df <- data.frame(
-#' normal1 = rnorm(n, mean = 50, sd = 10),    # Normally distributed
-#' normal2 = rnorm(n, mean = 100, sd = 20),   # Normally distributed
-#' uniform = runif(n, min = 0, max = 50),     # Uniform distribution (non-normal)
-#' poisson = rpois(n, lambda = 20),           # Poisson distribution (non-normal)
-#' exponential = rexp(n, rate = 0.1)          # Exponential distribution (non-normal)
-#' )
-#' test_normality(df)
+#' test_normality(example_data)
 #' @export
 #' @import stats
 test_normality <- function(df, threshold = 0.05) {

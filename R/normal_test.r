@@ -14,16 +14,11 @@
 #' @return a list where the first element contains the column names of normal data, the second element contains the column name for those data are not normal
 #' @author Yushu Zou
 #' @examples
-#' set.seed(123)
-#' n <- 1000
-#' df <- data.frame(
-#' normal1 = rnorm(n, mean = 50, sd = 10),    # Normally distributed
-#' normal2 = rnorm(n, mean = 100, sd = 20),   # Normally distributed
-#' uniform = runif(n, min = 0, max = 50),     # Uniform distribution (non-normal)
-#' poisson = rpois(n, lambda = 20),           # Poisson distribution (non-normal)
-#' exponential = rexp(n, rate = 0.1)          # Exponential distribution (non-normal)
-#' )
-#' result <- normal_test(df)
+#' normal_test(example_data)
+#' normal_test(example_data, group_var = "group_two")
+#' normal_test(example_data, group_var = "group_three")
+#' normal_test(example_data, group_var = "group_two", test = "variance")
+#' normal_test(example_data, group_var = "group_three", test = "variance")
 #' @export
 #' @import stats
 normal_test <-  function(df, test = "mean", group_var = NA, num_var = NA, paired = F, exact = F, mu_values = rep(NA,1), alternative = "two.sided", threshold = .05, method = "none", equal_variances = T){
@@ -33,8 +28,11 @@ normal_test <-  function(df, test = "mean", group_var = NA, num_var = NA, paired
       num_var <- normal_result$normal
   }
   # Indicate if all numeric column are not normal distributed or there is at least one column in num_var is not in dataframe
-    if (is.null(num_var) | min(num_var %in% names(df)) == 0){
-      stop("the variable you entered is not satisfy the condition for process")
+    if (is.null(num_var)){
+      stop("No variable in your dataframe are normal distributed under threshold; try using num_var to forcing process")
+    }
+    if((!is.null(num_var)) & (min(num_var %in% names(df)) == 0)){
+      stop("At least one num_var you entered is not in the dataframe, please double check")
     }
 
     if (length(mu_values) == 1 & max(is.na(mu_values)) == 1){
@@ -43,13 +41,16 @@ normal_test <-  function(df, test = "mean", group_var = NA, num_var = NA, paired
     mu_values <- setNames(mu_values, num_var)
     if (!is.na(group_var) & group_var %in% names(df)){
       df[[group_var]] <- as.factor(df[[group_var]])
+      if (group_var %in% num_var){
+        num_var = setdiff(num_var,group_var)
+      }
     }
     if ((is.na(group_var))|| (group_var %in% names(df) & length(levels(df[[group_var]])) == 1)){ ## one sample test
-      print("one sample test")
       if (test == "mean"){ ### one sample mean test
         result <- onesample_t(df,num_var, paired = paired, exact = exact,alternative = alternative, mu_values = mu_values, threshold = threshold)
       }
       else{ ### one sample variance test
+        print("one sample Chi-square test")
         result <- chisquare_onesample(df,num_var,alternative = alternative, mu_values = mu_values, threshold = threshold)
       }
       return(result)
@@ -59,9 +60,9 @@ normal_test <-  function(df, test = "mean", group_var = NA, num_var = NA, paired
   }
   if(length(levels(df[[group_var]])) > 1){## 2 or more sample test
       if(length(levels(df[[group_var]])) == 2){
-        print("Two groups comparison")
+        print("Two groups comparison mean test")
         # two sample t test
-        result <- twosample_t(df,num_var, test = test, group_var, paired = F, alternative = "two.sided", threshold = threshold)
+        result <- twosample_t(df,num_var, test = test, group_var, paired = paired, alternative = alternative, threshold = threshold)
       }
       else{ # more than 3 group test
         # one way anova test / welch test for more than 3 groups
@@ -72,3 +73,4 @@ normal_test <-  function(df, test = "mean", group_var = NA, num_var = NA, paired
     }
     return(result)
   }
+

@@ -20,21 +20,28 @@
 #' @export
 #'
 categorical_test <- function(df, group_var = NA, cat_var = NA, alternative = "two.sided", threshold = .05, correct = T){
-  if (max(is.na(cat_var)) == 1){
-    cat_var <- names(df)[sapply(df, function(col) (is.factor(col) || is.character(col))) & (names(df) != group_var)]
+  if (is.na(cat_var)){
+    cat_var <- names(df)[sapply(df, function(col) (is.factor(col) || is.character(col)))]
+    cat_var = setdiff(cat_var,group_var)
   }
   if (is.null(cat_var)){
     stop("there is no categorical data in your dataframe")
   }
-
+  if (min(cat_var %in% names(df)) == 0){
+    stop("At least one of the cat_var you entered is not in the dataframe, please double check")
+  }
   if (!is.na(group_var) & group_var %in% names(df)){
     df[[group_var]] <- as.factor(df[[group_var]])
   }
-  if(is.na(group_var) | length(levels(as.factor(df[[group_var]]))) == 1){
+  if(is.na(group_var)){
     stop("we only support compared it with the group")
   }
+
   if(!group_var %in% names(df)){
     stop("there is no such group column")
+  }
+  if (group_var %in% names(df) & length(levels(as.factor(df[[group_var]]))) == 1){
+    stop("the group_var you entered here only have one category, please double check")
   }
   if(length(levels(df[[group_var]])) == 2){
     print("two sample categorical test")
